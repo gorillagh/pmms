@@ -59,10 +59,10 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
-      // const { user } = result;
-      // const idTokenResult = await user.getIdTokenResult();
+      const { user } = result;
+      const idTokenResult = await user.getIdTokenResult();
 
-      googleLogin(token)
+      googleLogin(idTokenResult.token)
         .then((res) => {
           dispatch({
             type: "LOGGED_IN_USER",
@@ -70,7 +70,7 @@ const Login = () => {
               email: res.data.email,
               role: res.data.role,
               name: res.data.name,
-              token: token,
+              token: idTokenResult.token,
               phoneNumber: res.data.phoneNumber ? res.data.phoneNumber : "",
               _id: res.data._id,
             },
