@@ -20,10 +20,10 @@ import { checkEmailAvailability } from "../../serverFunctions/auth";
 import LoadingBackdrop from "../../components/PopUps/LoadingBackdrop";
 
 const Signup = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  // const [firstName, setFirstName] = useState("");
+  // const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  // const [phoneNumber, setPhoneNumber] = useState("");
   const [hideForm, setHideForm] = useState("");
   const [emailMsg, setEmailMsg] = useState("");
   const [hideEmailMsg, setHideEmailMsg] = useState("none");
@@ -59,12 +59,12 @@ const Signup = () => {
         return;
       }
 
-      if (!/^[0-9]+$/.test(phoneNumber) || phoneNumber.length < 9) {
-        toast.error("Please enter a valid phone number.");
-        setLoading(false);
-        setPhoneError(true);
-        return;
-      }
+      // if (!/^[0-9]+$/.test(phoneNumber) || phoneNumber.length < 9) {
+      //   toast.error("Please enter a valid phone number.");
+      //   setLoading(false);
+      //   setPhoneError(true);
+      //   return;
+      // }
 
       const config = {
         url: process.env.REACT_APP_SIGNUP_REDIRECT_URL,
@@ -74,16 +74,16 @@ const Signup = () => {
       await sendSignInLinkToEmail(auth, email, config);
 
       window.localStorage.setItem("signupEmail", email);
-      window.localStorage.setItem("signupFirstName", firstName);
-      window.localStorage.setItem("signupLastName", lastName);
-      window.localStorage.setItem("signupPhoneNumber", phoneNumber);
+      // window.localStorage.setItem("signupFirstName", firstName);
+      // window.localStorage.setItem("signupLastName", lastName);
+      // window.localStorage.setItem("signupPhoneNumber", phoneNumber);
 
       toast.success(`Verificaton link sent to ${email}.`);
 
-      setFirstName("");
-      setLastName("");
+      // setFirstName("");
+      // setLastName("");
       setEmail("");
-      setPhoneNumber("");
+      // setPhoneNumber("");
       setEmailMsg(email);
       setHideForm("none");
       setHideEmailMsg("");
@@ -149,7 +149,7 @@ const Signup = () => {
           >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <TextField
+                {/* <TextField
                   autoComplete="given-name"
                   name="firstName"
                   required
@@ -159,10 +159,10 @@ const Signup = () => {
                   autoFocus
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                />
+                /> */}
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
+                {/* <TextField
                   required
                   fullWidth
                   id="lastName"
@@ -171,7 +171,7 @@ const Signup = () => {
                   autoComplete="family-name"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                />
+                /> */}
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -187,7 +187,7 @@ const Signup = () => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                {/* <TextField
                   error={phoneError}
                   required
                   value={phoneNumber}
@@ -201,11 +201,11 @@ const Signup = () => {
                       <InputAdornment position="start">+233</InputAdornment>
                     ),
                   }}
-                />
+                /> */}
               </Grid>
             </Grid>
             <Button
-              disabled={!firstName || !lastName || !email || !phoneNumber}
+              disabled={!email}
               type="submit"
               fullWidth
               variant="contained"

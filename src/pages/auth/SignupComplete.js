@@ -28,6 +28,7 @@ const SignupComplete = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [emailAvailable, setEmailAvailable] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const [loading, setLoading] = useState(false);
@@ -54,10 +55,16 @@ const SignupComplete = () => {
   });
 
   useEffect(() => {
-    setEmail(window.localStorage.getItem("signupEmail"));
-    setFirstName(window.localStorage.getItem("signupFirstName"));
-    setLastName(window.localStorage.getItem("signupLastName"));
-    setPhoneNumber(window.localStorage.getItem("signupPhoneNumber"));
+    if (window.localStorage.getItem("signupEmail")) {
+      setEmail(window.localStorage.getItem("signupEmail"));
+    } else {
+      setEmailAvailable(false);
+    }
+
+    // setEmail(window.localStorage.getItem("signupEmail"));
+    // setFirstName(window.localStorage.getItem("signupFirstName"));
+    // setLastName(window.localStorage.getItem("signupLastName"));
+    // setPhoneNumber(window.localStorage.getItem("signupPhoneNumber"));
   }, []);
 
   const handleSubmit = async (e) => {
@@ -80,11 +87,10 @@ const SignupComplete = () => {
       setLoading(true);
 
       if (isSignInWithEmailLink(auth, window.location.href)) {
-        setEmail(window.localStorage.getItem("signupEmail"));
-        if (!email) {
-          window.prompt("Please provide your email for confirmation");
-          return;
-        }
+        // let email = window.localStorage.getItem("signupEmail");
+        // if (!email) {
+        //   email = window.prompt("Please provide your email for confirmation");
+        // }
         const result = await signInWithEmailLink(
           auth,
           email,
@@ -167,7 +173,6 @@ const SignupComplete = () => {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  disabled
                   autoComplete="given-name"
                   name="firstName"
                   required
@@ -175,11 +180,11 @@ const SignupComplete = () => {
                   id="firstName"
                   label="First Name"
                   value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  disabled
                   required
                   fullWidth
                   id="lastName"
@@ -187,11 +192,12 @@ const SignupComplete = () => {
                   name="lastName"
                   autoComplete="family-name"
                   value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  disabled
+                  disabled={emailAvailable}
                   required
                   fullWidth
                   id="email"
@@ -199,11 +205,11 @@ const SignupComplete = () => {
                   name="email"
                   autoComplete="email"
                   value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  disabled
                   required
                   value={phoneNumber}
                   fullWidth
@@ -214,6 +220,7 @@ const SignupComplete = () => {
                       <InputAdornment position="start">+233</InputAdornment>
                     ),
                   }}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
