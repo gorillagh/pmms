@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { auth } from "../../firebase";
-import { sendSignInLinkToEmail } from "firebase/auth";
-import { useSelector } from "react-redux";
+import {
+  sendSignInLinkToEmail,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
+
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -14,10 +19,17 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
+import Icon from "@mui/material/Icon";
 import InputAdornment from "@mui/material/InputAdornment";
 import NonstickyFooter from "../../components/Footers/NonstickyFooter";
-import { checkEmailAvailability } from "../../serverFunctions/auth";
+import {
+  checkEmailAvailability,
+  googleLogin,
+} from "../../serverFunctions/auth";
 import LoadingBackdrop from "../../components/PopUps/LoadingBackdrop";
+import googleSignInIcon from "../../images/googleSignin.svg";
+
+const provider = new GoogleAuthProvider();
 
 const Signup = () => {
   // const [firstName, setFirstName] = useState("");
@@ -33,6 +45,7 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => ({ ...state }));
+  const dispatch = useDispatch();
 
   const roleBasedRedirect = (user) => {
     if (user.role === "admin") {
@@ -45,6 +58,52 @@ const Signup = () => {
   useEffect(() => {
     if (user && user.token) roleBasedRedirect(user);
   });
+
+  const googleSignIn = async () => {
+    try {
+      setLoading(true);
+
+      // await signInWithRedirect(auth, provider);
+      // const result = await getRedirectResult(auth);
+      const result = await signInWithPopup(auth, provider);
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      const { user } = result;
+      const idTokenResult = await user.getIdTokenResult();
+
+      googleLogin(idTokenResult.token)
+        .then((res) => {
+          dispatch({
+            type: "LOGGED_IN_USER",
+            payload: {
+              email: res.data.email,
+              role: res.data.role,
+              name: res.data.name,
+              token: idTokenResult.token,
+              phoneNumber: res.data.phoneNumber ? res.data.phoneNumber : "",
+              _id: res.data._id,
+            },
+          });
+          toast.success(
+            `Welcome ${res.data.name.slice(0, res.data.name.indexOf(" "))}`
+          );
+          roleBasedRedirect(res.data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      if (error.message === "Firebase: Error (auth/popup-closed-by-user).") {
+        toast.error("Google sign in cancelled!");
+        setLoading(false);
+        return;
+      }
+      console.log(error.message);
+      toast.error(error.message);
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -147,6 +206,30 @@ const Signup = () => {
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
+            <Button
+              onClick={googleSignIn}
+              fullWidth
+              variant="contained"
+              sx={{
+                mt: 3,
+
+                borderRadius: 6,
+                mb: 2,
+                bgcolor: "#E34133",
+                textTransform: "none",
+                "&:hover": {
+                  bgcolor: "#E34133",
+                  boxShadow: "0 4px 30px rgba(0, 0, 0, 0.3)",
+                },
+              }}
+            >
+              <Icon sx={{ mr: 2 }}>
+                {" "}
+                <img src={googleSignInIcon} />{" "}
+              </Icon>
+              {/* <GoogleIcon sx={{ mr: 2, cursor: "pointer" }} /> */}
+              Join with Google
+            </Button>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 {/* <TextField
