@@ -9,6 +9,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Link from "@mui/material/Link";
 import MenuItem from "@mui/material/MenuItem";
+import LinkButton from "../Buttons/LinkButton";
 
 const HomeNavbar = () => {
   const pages = ["FAMILY", "PERSONAL", "HELP"];
@@ -115,39 +116,13 @@ const HomeNavbar = () => {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Link
+            <LinkButton
               href="/login"
-              underline="hover"
-              color="#495e51"
-              sx={{
-                p: 0,
-                mx: 1,
-                borderRadius: 6,
-                border: "solid #495e51",
-                borderWidth: 1,
-                padding: 2,
-                paddingTop: 1,
-                paddingBottom: 1,
-              }}
-            >
-              Log In
-            </Link>
-            <Link
-              href="/signup"
-              underline="hover"
-              color="#fff"
-              sx={{
-                p: 0,
-
-                borderRadius: 6,
-                padding: 2,
-                paddingTop: 1,
-                paddingBottom: 1,
-                backgroundColor: "#495e51",
-              }}
-            >
-              Sign Up
-            </Link>
+              text="Log In"
+              backgroundColor="#fff"
+              color="primary.main"
+            />
+            <LinkButton href="/signup" text="sign up" />
           </Box>
         </Toolbar>
       </Container>

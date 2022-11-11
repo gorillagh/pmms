@@ -35,6 +35,7 @@ import Transactions from "./pages/user/Transactions";
 
 const theme = createTheme({
   palette: {
+    mode: "light",
     primary: {
       light: "#757ce8",
       // main: "#336c4c",
@@ -48,6 +49,21 @@ const theme = createTheme({
       main: "#f44336",
       dark: "#ba000d",
       contrastText: "#000",
+    },
+    error: {
+      main: "#ce0018",
+      light: "#ff0220",
+      dark: "#a50013",
+      contrastText: "#fff",
+    },
+    info: {
+      main: "#726f55",
+      light: "#8f8b6a",
+      dark: "#5b5944",
+      contrastText: "#fff",
+    },
+    shape: {
+      borderRadius: 14,
     },
   },
 });

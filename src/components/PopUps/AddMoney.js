@@ -17,6 +17,8 @@ import Icon from "@mui/material/Icon";
 import NumberFormat from "react-number-format";
 import { Avatar, Grid } from "@mui/material";
 
+import { PaystackButton } from "react-paystack";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -50,16 +52,36 @@ const AddMoney = ({ open, closeModal, selectedPocket }) => {
     }
   }, [open]);
 
-  const handleAddMoney = async (e) => {
-    e.preventDefault();
+  const paystackButtonProps = {
+    email: user.email,
+    amount: amount * 100,
+    currency: "GHS",
+    metadata: {
+      name: pocket.title,
+      phone: user.phoneNumber,
+    },
+    customer: {
+      first_name: user.name,
+    },
+    label: pocket.title,
+    publicKey: process.env.REACT_APP_PAYSTACK_TEST_PUBLIC_KEY,
+    text: "Continue",
+    onSuccess: (response) => handleAddMoney(response),
+    onClose: () =>
+      window.confirm("Are you sure you want to cancel this transaction?"),
+  };
 
-    if (Number(amount) <= 0) {
-      toast.error(`Amount should be greater than 0`);
-      return;
-    }
+  const handleAddMoney = async (response) => {
+    console.log(response);
+
     try {
       setLoading(true);
+      if (response.status !== "success") {
+        toast.error("Transation failed");
+        return;
+      }
       const transaction = {
+        response,
         destination: pocket.slug,
         amount: Number(amount),
         source,
@@ -113,8 +135,8 @@ const AddMoney = ({ open, closeModal, selectedPocket }) => {
           </Typography>
 
           <Box
-            component="form"
-            onSubmit={handleAddMoney}
+            // component="form"
+            // onSubmit={handleAddMoney}
             noValidate
             sx={{ mt: 1 }}
           >
@@ -169,7 +191,7 @@ const AddMoney = ({ open, closeModal, selectedPocket }) => {
                 if (e.target.value >= 0) setAmount(e.target.value);
               }}
             />
-            <FormControl required fullWidth>
+            {/* <FormControl required fullWidth>
               <InputLabel
                 sx={{ fontSize: "small" }}
                 id="demo-simple-select-label"
@@ -198,7 +220,7 @@ const AddMoney = ({ open, closeModal, selectedPocket }) => {
                   Credit/Debit Card
                 </MenuItem>
               </Select>
-            </FormControl>
+            </FormControl> */}
 
             <TextField
               size="small"
@@ -227,17 +249,24 @@ const AddMoney = ({ open, closeModal, selectedPocket }) => {
               </Grid>
               <Grid item xs={6}>
                 <Button
-                  disabled={!pocket || !amount || !source}
-                  type="submit"
+                  disabled={!pocket || !amount || amount <= 0}
+                  // type="submit"
                   fullWidth
                   variant="contained"
                   sx={{
                     textTransform: "capitalize",
                     borderRadius: 6,
+                    display: !pocket || !amount || amount <= 0 ? "" : "none",
                   }}
                 >
                   continue
                 </Button>
+                <Box display={!pocket || !amount || amount <= 0 ? "none" : ""}>
+                  <PaystackButton
+                    {...paystackButtonProps}
+                    className="paystack-button"
+                  />
+                </Box>
               </Grid>
             </Grid>
           </Box>

@@ -342,7 +342,7 @@ const AddMoneyGeneral = ({ open }) => {
               ""
             )}
 
-            <FormControl required fullWidth sx={{ mt: 1 }}>
+            {/* <FormControl required fullWidth sx={{ mt: 1 }}>
               <InputLabel
                 sx={{ fontSize: "small" }}
                 id="demo-simple-select-label"
@@ -371,7 +371,7 @@ const AddMoneyGeneral = ({ open }) => {
                   Credit/Debit Card
                 </MenuItem>
               </Select>
-            </FormControl>
+            </FormControl> */}
             <TextField
               size="small"
               margin="normal"

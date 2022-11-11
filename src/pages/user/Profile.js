@@ -128,7 +128,7 @@ const Profile = () => {
     };
 
     return (
-      <Container maxWidth="lg" sx={{ display: { xs: "none", md: "block" } }}>
+      <Container maxWidth="lg" sx={{ display: { xs: "block", md: "block" } }}>
         <Typography align="center" component="h1" variant="h5">
           Your Profile
         </Typography>

@@ -25,6 +25,7 @@ import { googleLogin, loginUser } from "../../serverFunctions/auth";
 import LoadingBackdrop from "../../components/PopUps/LoadingBackdrop";
 import Icon from "@mui/material/Icon";
 import googleSignInIcon from "../../images/googleSignin.svg";
+import LinkButton from "../../components/Buttons/LinkButton";
 
 const provider = new GoogleAuthProvider();
 
@@ -253,6 +254,7 @@ const Login = () => {
               </Link>
             </Typography>
             <Divider sx={{ mt: 3 }} />
+
             <Link href="/signup" variant="body2">
               <Button
                 fullWidth

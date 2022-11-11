@@ -198,28 +198,6 @@ const Dashboard = () => {
                   <Icon fontSize="small">grid_view</Icon>
                 </ToggleButton>
               </ToggleButtonGroup>
-              {/* <Button
-                  sx={{
-                    p: 0,
-                    mx: 1,
-                    boxShadow: "0 4px 30px rgba(0, 0, 0, 0.5)",
-                    borderRadius: 6,
-                    border: "solid #495e51",
-                    borderWidth: 1,
-                    padding: 2,
-                    paddingTop: 1,
-                    paddingBottom: 1,
-                    "&:hover": {
-                      bgcolor: "#336c4c",
-                      color: "#fff",
-                    },
-                    textTransform: "none",
-                  }}
-                  variant="contained"
-                  onClick={() => setOpenSendMoneyModal(true)}
-                >
-                  <Icon fontSize="small">arrow_downward</Icon>Send
-                </Button> */}
             </Grid>
           </Grid>
           <Grid
