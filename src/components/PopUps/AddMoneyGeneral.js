@@ -425,6 +425,7 @@ const AddMoneyGeneral = ({ open }) => {
                   sx={{
                     textTransform: "capitalize",
                     borderRadius: 6,
+                    display: !pocket || !amount || amount <= 0 ? "" : "none",
                   }}
                 >
                   continue
