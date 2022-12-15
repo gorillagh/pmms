@@ -23,6 +23,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
+import { PaystackButton } from "react-paystack";
 
 const style = {
   position: "absolute",
@@ -77,6 +78,25 @@ const AddMoneyGeneral = ({ open }) => {
     }
     fetchUserPockets();
   }, [open]);
+
+  const paystackButtonProps = {
+    email: user.email,
+    amount: amount * 100,
+    currency: "GHS",
+    metadata: {
+      name: pocket.title,
+      phone: user.phoneNumber,
+    },
+    customer: {
+      first_name: user.name,
+    },
+    label: pocket.title,
+    publicKey: process.env.REACT_APP_PAYSTACK_TEST_PUBLIC_KEY,
+    text: "Continue",
+    onSuccess: (response) => handleAddMoney(response),
+    onClose: () =>
+      window.confirm("Are you sure you want to cancel this transaction?"),
+  };
 
   const handleAddMoney = async (e) => {
     e.preventDefault();
@@ -409,6 +429,12 @@ const AddMoneyGeneral = ({ open }) => {
                 >
                   continue
                 </Button>
+                <Box display={!pocket || !amount || amount <= 0 ? "none" : ""}>
+                  <PaystackButton
+                    {...paystackButtonProps}
+                    className="paystack-button"
+                  />
+                </Box>
               </Grid>
             </Grid>
           </Box>
