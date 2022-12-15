@@ -98,16 +98,19 @@ const AddMoneyGeneral = ({ open }) => {
       window.confirm("Are you sure you want to cancel this transaction?"),
   };
 
-  const handleAddMoney = async (e) => {
-    e.preventDefault();
-
+  const handleAddMoney = async (response) => {
     if (Number(amount) <= 0) {
       toast.error(`Amount should be greater than 0`);
       return;
     }
     try {
       setLoading(true);
+      if (response.status !== "success") {
+        toast.error("Transation failed");
+        return;
+      }
       const transaction = {
+        response,
         destination,
         amount: Number(amount),
         source,
@@ -173,7 +176,7 @@ const AddMoneyGeneral = ({ open }) => {
           </Typography>
 
           <Box
-            component="form"
+            // component="form"
             onSubmit={handleAddMoney}
             noValidate
             sx={{ mt: 1 }}
