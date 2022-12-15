@@ -418,8 +418,8 @@ const AddMoneyGeneral = ({ open }) => {
               </Grid>
               <Grid item xs={6}>
                 <Button
-                  disabled={!destination || !amount || !source}
-                  type="submit"
+                  disabled={!destination || !amount || !source || amount <= 0}
+                  // type="submit"
                   fullWidth
                   variant="contained"
                   sx={{
